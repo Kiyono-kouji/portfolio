@@ -4,7 +4,7 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { ExternalLink, Code2, Layers } from "lucide-react";
+import { Layers, Code2 } from "lucide-react";
 
 // Register both plugins once, at module level
 gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -164,7 +164,6 @@ export function Projects() {
           style={{ width: "max-content" }}
         >
           {projects.map((project, idx) => {
-            const IconComponent = project.icon;
             const imageLeft = idx % 2 === 0;
 
             return (
@@ -225,21 +224,6 @@ export function Projects() {
                         imageLeft ? "-right-10" : "-left-10"
                       } md:top-1/2 md:-translate-y-1/2 w-48 h-48 bg-gradient-to-br ${project.accentFrom}/15 ${project.accentTo}/5 rounded-full blur-3xl pointer-events-none`}
                     />
-
-                    {/* Icon + external link row
-                    <div className="flex items-center justify-between mb-4 relative z-10">
-                      <div
-                        className={`p-3 bg-gradient-to-br ${project.accentFrom} ${project.accentTo} rounded-xl shadow-[0_0_20px_rgba(251,191,36,0.3)]`}
-                      >
-                        <IconComponent className="w-5 h-5 text-background" />
-                      </div>
-                      <button
-                        aria-label={`Open ${project.title}`}
-                        className="p-2.5 bg-muted/50 backdrop-blur-sm rounded-full border border-border hover:border-primary hover:bg-primary/20 hover:-rotate-45 hover:scale-110 hover:shadow-[0_0_15px_rgba(251,191,36,0.35)] transition-all duration-300"
-                      >
-                        <ExternalLink className="w-4 h-4 text-primary" />
-                      </button>
-                    </div> */}
 
                     <div className="relative z-10">
                       <h3 className="text-xl md:text-2xl font-bold mb-1 group-hover:text-primary transition-colors duration-300 leading-tight">

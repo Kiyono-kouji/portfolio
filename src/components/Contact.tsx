@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Copy, Check, Github, Linkedin, Mail, ArrowUpRight, Sparkles } from "lucide-react";
 import gsap from "gsap";

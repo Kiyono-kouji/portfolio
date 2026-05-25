@@ -68,18 +68,6 @@ export function Hero() {
               Jonathan Halim
             </span>
           </h1>
-
-          {/* <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="group relative px-8 py-4 bg-primary text-primary-foreground rounded-lg overflow-hidden transition-all duration-300 hover:shadow-[0_0_30px_rgba(251,191,36,0.6)]"
-          >
-            <span className="relative z-10 font-mono flex items-center gap-2 font-semibold">
-              Deploy Conversation
-              <Terminal className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-            </span>
-            <div className="absolute inset-0 bg-gradient-to-r from-primary via-secondary to-primary bg-[length:200%_auto] animate-gradient opacity-0 group-hover:opacity-100 transition-opacity" />
-          </motion.button> */}
         </motion.div>
 
         <motion.div

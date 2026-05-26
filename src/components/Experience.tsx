@@ -24,7 +24,7 @@ const timeline = [
   },
 ];
 
-export function Experience() {
+export function Experience({ isAppMounted = false }: { isAppMounted?: boolean }) {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
@@ -32,6 +32,10 @@ export function Experience() {
   const lineRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!isAppMounted) return;
+
+    const cleanups: (() => void)[] = [];
+
     const ctx = gsap.context(() => {
       // Animate title
       gsap.fromTo(
@@ -92,7 +96,7 @@ export function Experience() {
 
           // Main card animation
           gsap.fromTo(
-            item.querySelector(".timeline-card"),
+            item.querySelectorAll(".timeline-card"),
             {
               x: isEven ? -100 : 100,
               y: 60,
@@ -155,9 +159,9 @@ export function Experience() {
           );
 
           // Year badge animation
-          const yearBadge = item.querySelector(".year-badge");
+          const yearBadges = item.querySelectorAll(".year-badge");
           gsap.fromTo(
-            yearBadge,
+            yearBadges,
             { opacity: 0, scale: 0.6 },
             {
               opacity: 1,
@@ -174,8 +178,9 @@ export function Experience() {
           );
 
           // Title animation
+          const expTitles = item.querySelectorAll(".exp-title");
           gsap.fromTo(
-            item.querySelector(".exp-title"),
+            expTitles,
             { opacity: 0, x: -20, filter: "blur(10px)" },
             {
               opacity: 1,
@@ -193,8 +198,9 @@ export function Experience() {
           );
 
           // Description animation
+          const expDescriptions = item.querySelectorAll(".exp-description");
           gsap.fromTo(
-            item.querySelector(".exp-description"),
+            expDescriptions,
             { opacity: 0, y: 15 },
             {
               opacity: 1,
@@ -211,78 +217,91 @@ export function Experience() {
           );
 
           // Enhanced hover animation
-          const card = item.querySelector(".timeline-card");
-          card?.addEventListener("mouseenter", () => {
-            gsap.timeline()
-              .to(
-                card,
-                {
-                  y: -15,
-                  scale: 1.02,
-                  boxShadow: "0 30px 60px rgba(251, 191, 36, 0.2)",
-                  duration: 0.4,
-                  ease: "power2.out",
-                },
-                0
-              )
-              .to(
-                iconWrapper,
-                {
-                  rotation: 360,
-                  scale: 1.15,
-                  duration: 0.6,
-                  ease: "back.out(1.7)",
-                },
-                0.1
-              );
+          const cards = item.querySelectorAll(".timeline-card");
+          cards.forEach((card) => {
+            const onMouseEnter = () => {
+              gsap.timeline()
+                .to(
+                  card,
+                  {
+                    y: -15,
+                    scale: 1.02,
+                    boxShadow: "0 30px 60px rgba(251, 191, 36, 0.2)",
+                    duration: 0.4,
+                    ease: "power2.out",
+                  },
+                  0
+                )
+                .to(
+                  iconWrapper,
+                  {
+                    rotation: 360,
+                    scale: 1.15,
+                    duration: 0.6,
+                    ease: "back.out(1.7)",
+                  },
+                  0.1
+                );
 
-            const glowBg = card.querySelector(".card-glow");
-            gsap.to(glowBg, {
-              opacity: 0.6,
-              scale: 1.1,
-              duration: 0.4,
-              ease: "power2.out",
-            });
-          });
+              const glowBg = card.querySelector(".card-glow");
+              gsap.to(glowBg, {
+                opacity: 0.6,
+                scale: 1.1,
+                duration: 0.4,
+                ease: "power2.out",
+              });
+            };
 
-          card?.addEventListener("mouseleave", () => {
-            gsap.timeline()
-              .to(
-                card,
-                {
-                  y: 0,
-                  scale: 1,
-                  boxShadow: "0 0 0px rgba(251, 191, 36, 0)",
-                  duration: 0.4,
-                  ease: "power2.out",
-                },
-                0
-              )
-              .to(
-                iconWrapper,
-                {
-                  rotation: 0,
-                  scale: 1,
-                  duration: 0.6,
-                  ease: "back.out(1.7)",
-                },
-                0
-              );
+            const onMouseLeave = () => {
+              gsap.timeline()
+                .to(
+                  card,
+                  {
+                    y: 0,
+                    scale: 1,
+                    boxShadow: "0 0 0px rgba(251, 191, 36, 0)",
+                    duration: 0.4,
+                    ease: "power2.out",
+                  },
+                  0
+                )
+                .to(
+                  iconWrapper,
+                  {
+                    rotation: 0,
+                    scale: 1,
+                    duration: 0.6,
+                    ease: "back.out(1.7)",
+                  },
+                  0
+                );
 
-            const glowBg = card.querySelector(".card-glow");
-            gsap.to(glowBg, {
-              opacity: 0,
-              scale: 1,
-              duration: 0.4,
-              ease: "power2.out",
+              const glowBg = card.querySelector(".card-glow");
+              gsap.to(glowBg, {
+                opacity: 0,
+                scale: 1,
+                duration: 0.4,
+                ease: "power2.out",
+              });
+            };
+
+            card.addEventListener("mouseenter", onMouseEnter);
+            card.addEventListener("mouseleave", onMouseLeave);
+
+            cleanups.push(() => {
+              card.removeEventListener("mouseenter", onMouseEnter);
+              card.removeEventListener("mouseleave", onMouseLeave);
             });
           });
         });
       }
     }, sectionRef);
 
-    return () => ctx.revert();
-  }, []);
+    return () => {
+      ctx.revert();
+      cleanups.forEach((cleanup) => cleanup());
+    };
+  }, [isAppMounted]);
 
   return (
     <section

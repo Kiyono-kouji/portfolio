@@ -49,7 +49,7 @@ const socials = [
 ];
 
 // ─── Component ────────────────────────────────────────────────────────────────
-export function Contact() {
+export function Contact({ isAppMounted = false }: { isAppMounted?: boolean }) {
   const [copied, setCopied] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -79,6 +79,8 @@ export function Contact() {
   // ── GSAP entrance animations ──────────────────────────────────────────────
   useGSAP(
     () => {
+      if (!isAppMounted) return;
+
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -97,14 +99,14 @@ export function Contact() {
           "-=0.4"
         );
     },
-    { scope: sectionRef }
+    { scope: sectionRef, dependencies: [isAppMounted] }
   );
 
   return (
     <section
       ref={sectionRef}
       id="contact"
-      className="relative min-h-screen flex flex-col items-center justify-center px-6 py-24 overflow-hidden"
+      className="relative min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 py-24 overflow-hidden"
     >
       {/* ── Ambient glows ────────────────────────────────────────────────── */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -126,7 +128,7 @@ export function Contact() {
 
           <h2
             ref={headingRef}
-            className="text-4xl md:text-6xl font-bold leading-tight opacity-0"
+            className="text-3xl sm:text-4xl md:text-6xl font-bold leading-tight opacity-0"
           >
             Let's Build{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-primary">
@@ -149,26 +151,26 @@ export function Contact() {
           <button
             onClick={handleCopy}
             aria-label="Copy email address"
-            className="group w-full relative flex items-center justify-between gap-4 px-7 py-5 bg-card/50 backdrop-blur-xl border border-border rounded-2xl transition-all duration-300 hover:border-primary/50 hover:shadow-[0_0_50px_rgba(251,191,36,0.15)] overflow-hidden"
+            className="group w-full relative flex items-center justify-between gap-3 px-4 sm:px-7 py-4 sm:py-5 bg-card/50 backdrop-blur-xl border border-border rounded-2xl transition-all duration-300 hover:border-primary/50 hover:shadow-[0_0_50px_rgba(251,191,36,0.15)] overflow-hidden"
           >
             {/* Sliding gradient fill on hover */}
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
             {/* Left: icon + email text */}
-            <div className="relative flex items-center gap-4">
-              <div className="p-2.5 bg-primary/10 rounded-xl border border-primary/30">
+            <div className="relative flex items-center gap-3 min-w-0 flex-1">
+              <div className="flex-shrink-0 p-2.5 bg-primary/10 rounded-xl border border-primary/30">
                 <Mail className="w-5 h-5 text-primary" />
               </div>
-              <div className="text-left">
+              <div className="text-left min-w-0">
                 <p className="text-xs text-muted-foreground font-mono mb-0.5">Professional Email</p>
-                <p className="text-sm md:text-base font-mono text-foreground font-medium tracking-wide">
+                <p className="text-xs sm:text-sm md:text-base font-mono text-foreground font-medium tracking-wide truncate">
                   {EMAIL}
                 </p>
               </div>
             </div>
 
             {/* Right: copy / copied state */}
-            <div className="relative flex-shrink-0">
+            <div className="relative flex-shrink-0 ml-2">
               <AnimatePresence mode="wait">
                 {copied ? (
                   <motion.div
@@ -177,7 +179,7 @@ export function Contact() {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.7 }}
                     transition={{ duration: 0.2 }}
-                    className="flex items-center gap-2 px-4 py-2 bg-primary/20 text-primary rounded-xl border border-primary/40 text-sm font-mono font-semibold"
+                    className="flex items-center gap-1.5 px-3 py-2 bg-primary/20 text-primary rounded-xl border border-primary/40 text-xs sm:text-sm font-mono font-semibold"
                   >
                     <Check className="w-4 h-4" />
                     Copied!
@@ -189,7 +191,7 @@ export function Contact() {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.7 }}
                     transition={{ duration: 0.2 }}
-                    className="flex items-center gap-2 px-4 py-2 bg-muted/50 text-muted-foreground rounded-xl border border-border group-hover:border-primary/40 group-hover:text-primary group-hover:bg-primary/10 transition-all duration-200 text-sm font-mono"
+                    className="flex items-center gap-1.5 px-3 py-2 bg-muted/50 text-muted-foreground rounded-xl border border-border group-hover:border-primary/40 group-hover:text-primary group-hover:bg-primary/10 transition-all duration-200 text-xs sm:text-sm font-mono"
                   >
                     <Copy className="w-4 h-4" />
                     Copy

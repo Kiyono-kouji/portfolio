@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useLayoutEffect } from "react";
 import { motion } from "motion/react";
 import { Terminal, Code2, Sparkles } from "lucide-react";
 import DecryptedText from "./DecryptedText";
@@ -9,6 +9,15 @@ export function Hero() {
   const [mousePos, setMousePos] = useState({ x: 225, y: 225 });
   const [isHovered, setIsHovered] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // SSR-safe mobile detection (touch-first devices skip the hover mechanic)
+  const [isMobile, setIsMobile] = useState(false);
+  useLayoutEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 1024 || window.matchMedia("(pointer: coarse)").matches);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
@@ -157,46 +166,124 @@ export function Hero() {
                   >
                     <span className="text-secondary font-bold">INFO:</span>
                     <span>
-                      <DecryptedText 
-                        text="Interactive reveal loaded. Hover the terminal!" 
-                        delay={2300} 
-                        speed={10}
-                        onComplete={() => setTerminalFinished(true)}
+                       <DecryptedText 
+                         text={isMobile ? "Tap the terminal to reveal!" : "Interactive reveal loaded. Hover the terminal!"} 
+                         delay={2300} 
+                         speed={10}
+                         onComplete={() => setTerminalFinished(true)}
                       />
                     </span>
                   </motion.div>
                 </div>
 
-                {/* Interactive Spotlight Reveal Layer */}
+                {/* Interactive Reveal Layer */}
                 {terminalFinished && (
                   <div
                     ref={containerRef}
-                    onMouseMove={handleMouseMove}
+                    // Desktop: track mouse position for spotlight
+                    onMouseMove={(e) => {
+                      if (isMobile) return;
+                      if (!containerRef.current) return;
+                      const rect = containerRef.current.getBoundingClientRect();
+                      setMousePos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+                    }}
                     onMouseEnter={(e) => {
+                      if (isMobile) return;
                       setIsHovered(true);
                       if (containerRef.current) {
                         const rect = containerRef.current.getBoundingClientRect();
-                        setMousePos({
-                          x: e.clientX - rect.left,
-                          y: e.clientY - rect.top,
-                        });
+                        setMousePos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
                       }
                     }}
-                    onMouseLeave={() => setIsHovered(false)}
-                    className="absolute inset-0 z-20 cursor-crosshair overflow-hidden rounded-2xl"
+                    onMouseLeave={() => { if (!isMobile) setIsHovered(false); }}
+                    // Mobile: tap to toggle
+                    onClick={() => { if (isMobile) setIsHovered((v) => !v); }}
+                    className="absolute inset-0 z-20 overflow-hidden rounded-2xl"
+                    style={{ cursor: isMobile ? "pointer" : "crosshair" }}
                   >
-                    {/* The spotlight image reveal */}
-                    <div
-                      className="absolute inset-0 bg-cover bg-center transition-opacity duration-300 ease-out"
-                      style={{
-                        backgroundImage: `url('/images/mainPicture.jpg')`,
-                        opacity: isHovered ? 1 : 0,
-                        WebkitMaskImage: `radial-gradient(circle 120px at ${mousePos.x}px ${mousePos.y}px, black 30%, transparent 100%)`,
-                        maskImage: `radial-gradient(circle 120px at ${mousePos.x}px ${mousePos.y}px, black 30%, transparent 100%)`,
-                      }}
-                    />
+                    {isMobile ? (
+                      <>
+                        {/* ── Mobile: CRT scan-line reveal ───────────────── */}
+                        {/* Image wipes in top→bottom via clip-path */}
+                        <motion.div
+                          className="absolute inset-0 bg-cover bg-center"
+                          initial={{ clipPath: "inset(0% 0% 100% 0%)" }}
+                          animate={{
+                            clipPath: isHovered
+                              ? "inset(0% 0% 0% 0%)"
+                              : "inset(0% 0% 100% 0%)",
+                          }}
+                          transition={{ duration: 0.75, ease: [0.25, 0.46, 0.45, 0.94] }}
+                          style={{
+                            backgroundImage: `url('/images/mainPicture.jpg')`,
+                            filter: isHovered
+                              ? "saturate(0.85) contrast(1.05)"
+                              : "none",
+                          }}
+                        />
+
+                        {/* Sweeping scan line — only rendered while active so it
+                            never sits at top:0% with its glow visible */}
+                        {isHovered && (
+                          <motion.div
+                            className="absolute left-0 right-0 h-px pointer-events-none"
+                            initial={{ top: "0%" }}
+                            animate={{ top: "100%" }}
+                            transition={{ duration: 0.75, ease: [0.25, 0.46, 0.45, 0.94] }}
+                            style={{
+                              background:
+                                "linear-gradient(90deg, transparent, #FBBF24, #67e8f9, #FBBF24, transparent)",
+                              boxShadow: "0 0 12px 4px rgba(251,191,36,0.6), 0 0 4px 1px rgba(103,232,249,0.5)",
+                              zIndex: 30,
+                            }}
+                          />
+                        )}
+
+                        {/* Scanline texture overlay (CRT horizontal lines) */}
+                        {isHovered && (
+                          <div
+                            className="absolute inset-0 pointer-events-none"
+                            style={{
+                              backgroundImage:
+                                "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.18) 3px, rgba(0,0,0,0.18) 4px)",
+                              zIndex: 25,
+                            }}
+                          />
+                        )}
+
+                        {/* Corner glow accents when revealed */}
+                        {isHovered && (
+                          <>
+                            <div className="absolute top-0 left-0 w-12 h-12 bg-primary/30 blur-xl rounded-full pointer-events-none z-20" />
+                            <div className="absolute bottom-0 right-0 w-12 h-12 bg-secondary/30 blur-xl rounded-full pointer-events-none z-20" />
+                          </>
+                        )}
+
+                        {/* Tap hint when hidden */}
+                        {!isHovered && (
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <span className="text-xs font-mono text-primary/70 bg-card/60 px-3 py-1.5 rounded-full border border-primary/30 backdrop-blur-sm animate-pulse">
+                              Tap to reveal ↑
+                            </span>
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      /* ── Desktop: spotlight mask reveal ─────────────────── */
+                      <div
+                        className="absolute inset-0 bg-cover bg-center"
+                        style={{
+                          backgroundImage: `url('/images/mainPicture.jpg')`,
+                          opacity: isHovered ? 1 : 0,
+                          transition: "opacity 600ms ease-out",
+                          WebkitMaskImage: `radial-gradient(circle 120px at ${mousePos.x}px ${mousePos.y}px, black 30%, transparent 100%)`,
+                          maskImage: `radial-gradient(circle 120px at ${mousePos.x}px ${mousePos.y}px, black 30%, transparent 100%)`,
+                        }}
+                      />
+                    )}
                   </div>
                 )}
+
 
                 <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
                 <div className="absolute -top-10 -left-10 w-40 h-40 bg-secondary/10 rounded-full blur-3xl pointer-events-none" />

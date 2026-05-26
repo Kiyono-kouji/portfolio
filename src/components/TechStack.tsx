@@ -38,12 +38,14 @@ const techCategories = [
   },
 ];
 
-export function TechStack() {
+export function TechStack({ isAppMounted = false }: { isAppMounted?: boolean }) {
   const sectionRef = useRef<HTMLElement>(null);
   const orbitRingsRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!isAppMounted) return;
+
     const ctx = gsap.context(() => {
       const rings = orbitRingsRef.current?.querySelectorAll(".orbit-ring");
       if (rings) {
@@ -126,7 +128,7 @@ export function TechStack() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [isAppMounted]);
 
   return (
     <section

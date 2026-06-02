@@ -1,6 +1,7 @@
-import React, { useState, useRef, useLayoutEffect } from "react";
+import React, { useState, useRef, useLayoutEffect, useCallback } from "react";
 import { motion } from "motion/react";
 import { Terminal, Code2, Sparkles } from "lucide-react";
+import Image from "next/image";
 import DecryptedText from "./DecryptedText";
 import FaultyTerminal from "./FaultyTerminal";
 
@@ -9,6 +10,8 @@ export function Hero() {
   const [mousePos, setMousePos] = useState({ x: 225, y: 225 });
   const [isHovered, setIsHovered] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  // rAF-throttle: only schedule one setState per animation frame
+  const rafPendingRef = useRef(false);
 
   // SSR-safe mobile detection (touch-first devices skip the hover mechanic)
   const [isMobile, setIsMobile] = useState(false);
@@ -19,14 +22,18 @@ export function Hero() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    setMousePos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (!containerRef.current || rafPendingRef.current) return;
+    rafPendingRef.current = true;
+    const clientX = e.clientX;
+    const clientY = e.clientY;
+    requestAnimationFrame(() => {
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      setMousePos({ x: clientX - rect.left, y: clientY - rect.top });
+      rafPendingRef.current = false;
     });
-  };
+  }, []);
 
   return (
     <section className="min-h-screen flex items-center justify-center px-6 py-28 md:py-0 relative overflow-hidden">
@@ -206,7 +213,7 @@ export function Hero() {
                         {/* ── Mobile: CRT scan-line reveal ───────────────── */}
                         {/* Image wipes in top→bottom via clip-path */}
                         <motion.div
-                          className="absolute inset-0 bg-cover bg-center"
+                          className="absolute inset-0 overflow-hidden"
                           initial={{ clipPath: "inset(0% 0% 100% 0%)" }}
                           animate={{
                             clipPath: isHovered
@@ -215,12 +222,20 @@ export function Hero() {
                           }}
                           transition={{ duration: 0.75, ease: [0.25, 0.46, 0.45, 0.94] }}
                           style={{
-                            backgroundImage: `url('/images/mainPicture.jpg')`,
                             filter: isHovered
                               ? "saturate(0.85) contrast(1.05)"
                               : "none",
                           }}
-                        />
+                        >
+                          <Image
+                            src="/images/mainPicture.jpg"
+                            alt="Kenneth Jonathan Halim"
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 1024px) 100vw, 50vw"
+                            priority
+                          />
+                        </motion.div>
 
                         {/* Sweeping scan line — only rendered while active so it
                             never sits at top:0% with its glow visible */}
@@ -271,15 +286,23 @@ export function Hero() {
                     ) : (
                       /* ── Desktop: spotlight mask reveal ─────────────────── */
                       <div
-                        className="absolute inset-0 bg-cover bg-center"
+                        className="absolute inset-0 overflow-hidden"
                         style={{
-                          backgroundImage: `url('/images/mainPicture.jpg')`,
                           opacity: isHovered ? 1 : 0,
                           transition: "opacity 600ms ease-out",
                           WebkitMaskImage: `radial-gradient(circle 120px at ${mousePos.x}px ${mousePos.y}px, black 30%, transparent 100%)`,
                           maskImage: `radial-gradient(circle 120px at ${mousePos.x}px ${mousePos.y}px, black 30%, transparent 100%)`,
                         }}
-                      />
+                      >
+                        <Image
+                          src="/images/mainPicture.jpg"
+                          alt="Kenneth Jonathan Halim"
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 1024px) 100vw, 50vw"
+                          priority
+                        />
+                      </div>
                     )}
                   </div>
                 )}

@@ -213,4 +213,18 @@
   .animate-gradient {
     animation: gradient 3s ease infinite;
   }
+
+  /* Replaces the GSAP infinite boxShadow tween in Experience.tsx.
+     Runs entirely on the compositor thread — zero JS cost. */
+  @keyframes icon-glow-pulse {
+    0%, 100% { box-shadow: 0 0 10px rgba(251, 191, 36, 0); }
+    50%       { box-shadow: 0 0 30px rgba(251, 191, 36, 0.6); }
+  }
+
+  /* Replaces the GSAP infinite rotation tween in TechStack.tsx.
+     Runs entirely on the compositor thread — zero JS cost. */
+  @keyframes slow-spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
 }

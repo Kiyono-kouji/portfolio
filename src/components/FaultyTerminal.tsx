@@ -276,6 +276,8 @@ function FaultyTerminal({
   const rafRef = useRef(0);
   const loadAnimationStartRef = useRef(0);
   const timeOffsetRef = useRef(Math.random() * 100);
+  // True when the tab is hidden or the window is blurred — stops the RAF loop
+  const hiddenRef = useRef(false);
 
   const tintVec = useMemo(() => hexToRgb(tint), [tint]);
   const ditherValue = useMemo(() => (typeof dither === 'boolean' ? (dither ? 1 : 0) : dither), [dither]);
@@ -294,8 +296,10 @@ function FaultyTerminal({
     const ctn = containerRef.current;
     if (!ctn) return;
 
-    // SSR Safe DPR calculation
-    const resolvedDpr = dpr !== undefined ? dpr : (typeof window !== 'undefined' ? Math.min(window.devicePixelRatio || 1, 2) : 1);
+    // SSR Safe DPR calculation — clamp to 1 on low-end devices (< 4 CPU cores)
+    // to halve the fragment shader workload. Cap at 2 on everything else.
+    const isLowEnd = typeof navigator !== 'undefined' && (navigator.hardwareConcurrency ?? 4) < 4;
+    const resolvedDpr = dpr !== undefined ? dpr : (typeof window !== 'undefined' ? (isLowEnd ? 1 : Math.min(window.devicePixelRatio || 1, 2)) : 1);
 
     const renderer = new Renderer({ dpr: resolvedDpr });
     rendererRef.current = renderer;
@@ -353,6 +357,12 @@ function FaultyTerminal({
     resize();
 
     const update = (t: number) => {
+      // Skip frame entirely when tab is hidden or window is blurred
+      if (hiddenRef.current) {
+        rafRef.current = requestAnimationFrame(update);
+        return;
+      }
+
       rafRef.current = requestAnimationFrame(update);
 
       if (pageLoadAnimation && loadAnimationStartRef.current === 0) {
@@ -389,6 +399,15 @@ function FaultyTerminal({
       renderer.render({ scene: mesh });
     };
     rafRef.current = requestAnimationFrame(update);
+
+    // Pause rendering when the tab is hidden or the window loses focus
+    const onHide = () => { hiddenRef.current = true; };
+    const onShow = () => { hiddenRef.current = false; };
+    document.addEventListener('visibilitychange', () => {
+      hiddenRef.current = document.hidden;
+    });
+    window.addEventListener('blur', onHide);
+    window.addEventListener('focus', onShow);
     ctn.appendChild(gl.canvas);
 
     if (mouseReact && typeof window !== 'undefined') {
@@ -401,6 +420,8 @@ function FaultyTerminal({
       if (mouseReact && typeof window !== 'undefined') {
         window.removeEventListener('mousemove', handleMouseMove);
       }
+      window.removeEventListener('blur', onHide);
+      window.removeEventListener('focus', onShow);
       if (gl.canvas.parentElement === ctn) {
         ctn.removeChild(gl.canvas);
       }

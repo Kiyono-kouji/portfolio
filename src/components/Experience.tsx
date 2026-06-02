@@ -145,18 +145,9 @@ export function Experience({ isAppMounted = false }: { isAppMounted?: boolean })
             }
           );
 
-          // Glow effect on icon
-          const iconGlow = item.querySelector(".icon-glow");
-          gsap.fromTo(iconGlow,
-            { boxShadow: "0 0 10px rgba(251, 191, 36, 0)" },
-            {
-              boxShadow: "0 0 30px rgba(251, 191, 36, 0.6)",
-              duration: 1,
-              repeat: -1,
-              yoyo: true,
-              ease: "sine.inOut",
-            }
-          );
+          // Glow effect on icon — use CSS animation instead of GSAP infinite tween
+          // so it runs on the compositor thread with zero JS overhead.
+          // (The .icon-glow-pulse class is added to the element via className in JSX)
 
           // Year badge animation
           const yearBadges = item.querySelectorAll(".year-badge");
@@ -311,8 +302,8 @@ export function Experience({ isAppMounted = false }: { isAppMounted?: boolean })
     >
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-40 -left-40 w-80 h-80 bg-primary/10 rounded-full blur-3xl opacity-0 animate-pulse" />
-        <div className="absolute bottom-40 -right-40 w-80 h-80 bg-secondary/10 rounded-full blur-3xl opacity-0 animate-pulse" style={{ animationDelay: "1s" }} />
+        <div className="absolute top-40 -left-40 w-80 h-80 bg-primary/10 rounded-full blur-3xl opacity-0" />
+        <div className="absolute bottom-40 -right-40 w-80 h-80 bg-secondary/10 rounded-full blur-3xl opacity-0" />
       </div>
 
       <div className="max-w-5xl w-full relative z-10">
@@ -377,7 +368,7 @@ export function Experience({ isAppMounted = false }: { isAppMounted?: boolean })
                   {/* Center icon */}
                   <div className="flex flex-col items-center justify-start md:justify-center">
                     <div className="timeline-icon-wrapper relative z-20">
-                      <div className="icon-glow w-14 h-14 rounded-full bg-gradient-to-br from-primary to-secondary shadow-[0_0_20px_rgba(251,191,36,0.5)]" />
+                      <div className="icon-glow w-14 h-14 rounded-full bg-gradient-to-br from-primary to-secondary [animation:icon-glow-pulse_2s_ease-in-out_infinite]" />
                       <div className="absolute inset-0 w-14 h-14 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
                         <IconComponent className="w-6 h-6 text-background" />
                       </div>

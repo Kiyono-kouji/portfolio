@@ -70,17 +70,8 @@ export function TechStack({ isAppMounted = false }: { isAppMounted?: boolean }) 
             },
           }
         );
-
-        gsap.to(rings, {
-          rotation: 360,
-          duration: 60,
-          repeat: -1,
-          ease: "none",
-          stagger: {
-            each: 0.5,
-            from: "start",
-          },
-        });
+        // Infinite rotation is now handled by CSS animation (slow-spin keyframe)
+        // so GSAP doesn’t need to tick for it at all.
       }
 
       const cards = cardsRef.current?.querySelectorAll(".tech-card");
@@ -149,9 +140,9 @@ export function TechStack({ isAppMounted = false }: { isAppMounted?: boolean }) 
 
         <div className="relative">
           <div ref={orbitRingsRef} className="absolute inset-0 flex items-center justify-center">
-            <div className="orbit-ring w-64 h-64 border-2 border-primary/20 rounded-full shadow-[0_0_20px_rgba(251,191,36,0.2)]" />
-            <div className="orbit-ring absolute w-96 h-96 border-2 border-primary/15 rounded-full shadow-[0_0_30px_rgba(251,191,36,0.15)]" />
-            <div className="orbit-ring absolute w-[32rem] h-[32rem] border border-primary/10 rounded-full shadow-[0_0_40px_rgba(251,191,36,0.1)]" />
+            <div className="orbit-ring w-64 h-64 border-2 border-primary/20 rounded-full shadow-[0_0_20px_rgba(251,191,36,0.2)]" style={{ animation: 'slow-spin 60s linear infinite' }} />
+            <div className="orbit-ring absolute w-96 h-96 border-2 border-primary/15 rounded-full shadow-[0_0_30px_rgba(251,191,36,0.15)]" style={{ animation: 'slow-spin 90s linear infinite' }} />
+            <div className="orbit-ring absolute w-[32rem] h-[32rem] border border-primary/10 rounded-full shadow-[0_0_40px_rgba(251,191,36,0.1)]" style={{ animation: 'slow-spin 120s linear infinite' }} />
           </div>
 
           <div ref={cardsRef} className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

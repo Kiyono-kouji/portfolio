@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useLayoutEffect } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -89,10 +90,13 @@ function ProjectCard({
           <div
             className={`absolute inset-0 bg-gradient-to-br ${project.accentFrom}/10 ${project.accentTo}/10 z-10 pointer-events-none mix-blend-overlay`}
           />
-          <img
+          <Image
             src={project.image}
             alt={`${project.title} screenshot`}
-            className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
+            fill
+            className="object-contain transition-transform duration-700 group-hover:scale-105"
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            loading="lazy"
           />
         </div>
 
@@ -248,12 +252,11 @@ export function Projects({ isAppMounted = false }: { isAppMounted?: boolean }) {
       className="relative overflow-hidden bg-background"
       style={isMobile ? {} : { minHeight: "100vh" }}
     >
-      {/* ── Ambient background glows ─────────────────────────────────────── */}
+      {/* ── Ambient background glows ──────────────────────────────────── */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-1/4 -left-40 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute top-1/4 -left-40 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
         <div
-          className="absolute bottom-1/4 -right-40 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-pulse"
-          style={{ animationDelay: "1.2s" }}
+          className="absolute bottom-1/4 -right-40 w-96 h-96 bg-secondary/10 rounded-full blur-3xl"
         />
       </div>
 

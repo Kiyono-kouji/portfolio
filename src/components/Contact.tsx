@@ -110,10 +110,9 @@ export function Contact({ isAppMounted = false }: { isAppMounted?: boolean }) {
     >
       {/* ── Ambient glows ────────────────────────────────────────────────── */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-primary/8 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-primary/8 rounded-full blur-3xl" />
         <div
-          className="absolute bottom-1/3 right-1/4 w-80 h-80 bg-secondary/8 rounded-full blur-3xl animate-pulse"
-          style={{ animationDelay: "1.4s" }}
+          className="absolute bottom-1/3 right-1/4 w-80 h-80 bg-secondary/8 rounded-full blur-3xl"
         />
       </div>
 

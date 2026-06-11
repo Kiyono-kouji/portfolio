@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+/* Google Fonts are now loaded via preconnect + link tags in layout.tsx
+   for non-blocking parallel loading. Font-family variables are kept here. */
 
 :root {
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -12,3 +13,4 @@ body {
 .font-mono {
   font-family: var(--font-mono);
 }
+

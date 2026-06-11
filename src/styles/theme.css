@@ -135,7 +135,8 @@
 
   html {
     font-size: var(--font-size);
-    scroll-behavior: smooth;
+    /* Note: scroll-behavior: smooth removed — Lenis handles smooth scrolling
+       and CSS smooth-scroll conflicts with GSAP ScrollTrigger pin calculations */
   }
 
   ::-webkit-scrollbar {

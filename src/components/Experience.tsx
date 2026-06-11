@@ -3,7 +3,6 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Briefcase, GraduationCap } from "lucide-react";
 
-gsap.registerPlugin(ScrollTrigger);
 
 const timeline = [
   {
@@ -300,11 +299,6 @@ export function Experience({ isAppMounted = false }: { isAppMounted?: boolean })
       id="experience"
       className="relative min-h-screen flex items-center justify-center px-6 py-32 overflow-hidden"
     >
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-40 -left-40 w-80 h-80 bg-primary/10 rounded-full blur-3xl opacity-0" />
-        <div className="absolute bottom-40 -right-40 w-80 h-80 bg-secondary/10 rounded-full blur-3xl opacity-0" />
-      </div>
 
       <div className="max-w-5xl w-full relative z-10">
         {/* Header */}

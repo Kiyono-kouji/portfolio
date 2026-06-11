@@ -357,13 +357,11 @@ function FaultyTerminal({
     resize();
 
     const update = (t: number) => {
-      // Skip frame entirely when tab is hidden or window is blurred
-      if (hiddenRef.current) {
-        rafRef.current = requestAnimationFrame(update);
-        return;
-      }
-
+      // Always re-queue so the loop stays alive and can resume when focus returns.
       rafRef.current = requestAnimationFrame(update);
+
+      // Skip all shader/render work when tab is hidden or window is blurred.
+      if (hiddenRef.current) return;
 
       if (pageLoadAnimation && loadAnimationStartRef.current === 0) {
         loadAnimationStartRef.current = t;

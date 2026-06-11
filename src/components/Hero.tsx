@@ -57,8 +57,7 @@ export function Hero() {
           pageLoadAnimation={true}
           brightness={1}
         />
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/30 rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/30 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: "1s" }} />
+
       </div>
 
       <div className="max-w-7xl w-full grid md:grid-cols-2 gap-12 items-center relative z-10">
@@ -187,16 +186,12 @@ export function Hero() {
                 {terminalFinished && (
                   <div
                     ref={containerRef}
-                    // Desktop: track mouse position for spotlight
-                    onMouseMove={(e) => {
-                      if (isMobile) return;
-                      if (!containerRef.current) return;
-                      const rect = containerRef.current.getBoundingClientRect();
-                      setMousePos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-                    }}
+                    // Desktop: RAF-throttled mouse tracking for spotlight
+                    onMouseMove={isMobile ? undefined : handleMouseMove}
                     onMouseEnter={(e) => {
                       if (isMobile) return;
                       setIsHovered(true);
+                      // Seed the initial position immediately (no RAF needed — single call)
                       if (containerRef.current) {
                         const rect = containerRef.current.getBoundingClientRect();
                         setMousePos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
@@ -228,7 +223,7 @@ export function Hero() {
                           }}
                         >
                           <Image
-                            src="/images/mainPicture.jpg"
+                            src="/images/mainPicture.webp"
                             alt="Kenneth Jonathan Halim"
                             fill
                             className="object-cover"
@@ -295,7 +290,7 @@ export function Hero() {
                         }}
                       >
                         <Image
-                          src="/images/mainPicture.jpg"
+                          src="/images/mainPicture.webp"
                           alt="Kenneth Jonathan Halim"
                           fill
                           className="object-cover"

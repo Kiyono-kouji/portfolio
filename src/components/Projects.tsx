@@ -19,7 +19,7 @@ const projects = [
     description:
       "Developed a comprehensive android application for financial tracking and investment education. Engineered core modules including a Wallet system for transaction management and a gamified educational Course interface.",
     icon: Layers,
-    image: "/images/tanamIn.png",
+    image: "/images/tanamIn.webp",
     accentFrom: "from-primary",
     accentTo: "to-secondary",
     number: "01",
@@ -31,7 +31,7 @@ const projects = [
     description:
       "Spearheaded the complete redesign and modernization of the COTHA website. Leveraged modern Laravel tools and SQL for robust backend data management, paired with a custom Bootstrap implementation to deliver a refreshed, responsive UI.",
     icon: Code2,
-    image: "/images/cotha.png",
+    image: "/images/cotha.webp",
     accentFrom: "from-secondary",
     accentTo: "to-chart-3",
     number: "02",
@@ -43,7 +43,7 @@ const projects = [
     description:
       "Developed the official web-based landing page for the PintarSkinCare application. Utilized Laravel for the backend infrastructure and Tailwind CSS to craft a highly responsive, modern frontend designed to drive user acquisition.",
     icon: Code2,
-    image: "/images/pintarSkinCare.png",
+    image: "/images/pintarSkinCare.webp",
     accentFrom: "from-chart-3",
     accentTo: "to-primary",
     number: "03",

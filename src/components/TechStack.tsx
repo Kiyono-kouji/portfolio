@@ -3,7 +3,6 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Smartphone, Code, Server, Database, Cpu, GitBranch } from "lucide-react";
 
-gsap.registerPlugin(ScrollTrigger);
 
 const techCategories = [
   {
@@ -99,22 +98,6 @@ export function TechStack({ isAppMounted = false }: { isAppMounted?: boolean }) 
             },
           }
         );
-      }
-
-      const skillTags = cardsRef.current?.querySelectorAll(".skill-tag");
-      if (skillTags) {
-        skillTags.forEach((tag) => {
-          gsap.fromTo(
-            tag,
-            { scale: 1 },
-            {
-              scale: 1.05,
-              duration: 0.3,
-              paused: true,
-              ease: "power2.out",
-            }
-          );
-        });
       }
     }, sectionRef);
 

@@ -167,15 +167,14 @@ export function Experience({ isAppMounted = false }: { isAppMounted?: boolean })
             }
           );
 
-          // Title animation
+          // Title animation — no filter:blur (CPU-only, not compositor-accelerated)
           const expTitles = item.querySelectorAll(".exp-title");
           gsap.fromTo(
             expTitles,
-            { opacity: 0, x: -20, filter: "blur(10px)" },
+            { opacity: 0, x: -20 },
             {
               opacity: 1,
               x: 0,
-              filter: "blur(0px)",
               duration: 0.7,
               delay: index * 0.2 + 0.5,
               ease: "power2.out",
@@ -339,7 +338,7 @@ export function Experience({ isAppMounted = false }: { isAppMounted?: boolean })
                     <div className="hidden md:flex flex-1 flex-col justify-center items-end pr-16">
                       <div className="timeline-card relative group w-full max-w-sm will-change-transform">
                         <div className="card-glow absolute inset-0 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl blur-xl opacity-0 transition-opacity duration-300" />
-                        <div className="relative bg-gradient-to-br from-card/60 to-card/30 backdrop-blur-xl border border-border/50 rounded-2xl p-6 hover:border-primary/50 transition-all duration-300 overflow-hidden">
+                        <div className="relative bg-gradient-to-br from-card/80 to-card/60 backdrop-blur-sm border border-border/50 rounded-2xl p-6 hover:border-primary/50 transition-all duration-300 overflow-hidden">
                           <div className="absolute inset-0 bg-gradient-to-t from-primary/5 via-transparent to-transparent rounded-2xl pointer-events-none" />
 
                           <div className="relative z-10">
@@ -374,7 +373,7 @@ export function Experience({ isAppMounted = false }: { isAppMounted?: boolean })
                     <div className="hidden md:flex flex-1 flex-col justify-center items-start pl-16">
                       <div className="timeline-card relative group w-full max-w-sm will-change-transform">
                         <div className="card-glow absolute inset-0 bg-gradient-to-br from-secondary/10 to-primary/10 rounded-2xl blur-xl opacity-0 transition-opacity duration-300" />
-                        <div className="relative bg-gradient-to-br from-card/60 to-card/30 backdrop-blur-xl border border-border/50 rounded-2xl p-6 hover:border-primary/50 transition-all duration-300 overflow-hidden">
+                        <div className="relative bg-gradient-to-br from-card/80 to-card/60 backdrop-blur-sm border border-border/50 rounded-2xl p-6 hover:border-primary/50 transition-all duration-300 overflow-hidden">
                           <div className="absolute inset-0 bg-gradient-to-t from-primary/5 via-transparent to-transparent rounded-2xl pointer-events-none" />
 
                           <div className="relative z-10">
@@ -398,7 +397,7 @@ export function Experience({ isAppMounted = false }: { isAppMounted?: boolean })
                   <div className="md:hidden flex-1 ml-8">
                     <div className="timeline-card relative group w-full will-change-transform">
                       <div className="card-glow absolute inset-0 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl blur-xl opacity-0 transition-opacity duration-300" />
-                      <div className="relative bg-gradient-to-br from-card/60 to-card/30 backdrop-blur-xl border border-border/50 rounded-2xl p-6 hover:border-primary/50 transition-all duration-300 overflow-hidden">
+                      <div className="relative bg-gradient-to-br from-card/80 to-card/60 backdrop-blur-sm border border-border/50 rounded-2xl p-6 hover:border-primary/50 transition-all duration-300 overflow-hidden">
                         <div className="absolute inset-0 bg-gradient-to-t from-primary/5 via-transparent to-transparent rounded-2xl pointer-events-none" />
 
                         <div className="relative z-10">

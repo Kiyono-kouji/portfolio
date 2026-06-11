@@ -148,7 +148,7 @@ export function Contact({ isAppMounted = false }: { isAppMounted?: boolean }) {
           <button
             onClick={handleCopy}
             aria-label="Copy email address"
-            className="group w-full relative flex items-center justify-between gap-3 px-4 sm:px-7 py-4 sm:py-5 bg-card/50 backdrop-blur-xl border border-border rounded-2xl transition-all duration-300 hover:border-primary/50 hover:shadow-[0_0_50px_rgba(251,191,36,0.15)] overflow-hidden"
+            className="group w-full relative flex items-center justify-between gap-3 px-4 sm:px-7 py-4 sm:py-5 bg-card/80 backdrop-blur-sm border border-border rounded-2xl transition-all duration-300 hover:border-primary/50 hover:shadow-[0_0_50px_rgba(251,191,36,0.15)] overflow-hidden"
           >
             {/* Sliding gradient fill on hover */}
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -212,7 +212,7 @@ export function Contact({ isAppMounted = false }: { isAppMounted?: boolean }) {
                 href={s.href}
                 target={s.id !== "email" ? "_blank" : undefined}
                 rel="noopener noreferrer"
-                className={`social-card group relative flex flex-col items-start gap-3 p-5 bg-card/50 backdrop-blur-xl border border-border rounded-2xl transition-all duration-300 ${s.border} ${s.shadow} overflow-hidden opacity-0`}
+                className={`social-card group relative flex flex-col items-start gap-3 p-5 bg-card/80 backdrop-blur-sm border border-border rounded-2xl transition-all duration-300 ${s.border} ${s.shadow} overflow-hidden opacity-0`}
               >
                 {/* Hover gradient fill */}
                 <div className={`absolute inset-0 bg-gradient-to-br ${s.gradient} opacity-0 group-hover:opacity-[0.06] transition-opacity duration-300`} />

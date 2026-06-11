@@ -216,10 +216,10 @@
   }
 
   /* Replaces the GSAP infinite boxShadow tween in Experience.tsx.
-     Runs entirely on the compositor thread — zero JS cost. */
+     Animates opacity (compositor-accelerated) instead of box-shadow (CPU repaint). */
   @keyframes icon-glow-pulse {
-    0%, 100% { box-shadow: 0 0 10px rgba(251, 191, 36, 0); }
-    50%       { box-shadow: 0 0 30px rgba(251, 191, 36, 0.6); }
+    0%, 100% { opacity: 0; }
+    50%       { opacity: 1; }
   }
 
   /* Replaces the GSAP infinite rotation tween in TechStack.tsx.

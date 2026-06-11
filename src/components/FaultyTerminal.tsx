@@ -278,6 +278,8 @@ function FaultyTerminal({
   const timeOffsetRef = useRef(Math.random() * 100);
   // True when the tab is hidden or the window is blurred — stops the RAF loop
   const hiddenRef = useRef(false);
+  // True when the terminal is scrolled off-screen — skips shader work without killing the loop
+  const offScreenRef = useRef(false);
 
   const tintVec = useMemo(() => hexToRgb(tint), [tint]);
   const ditherValue = useMemo(() => (typeof dither === 'boolean' ? (dither ? 1 : 0) : dither), [dither]);
@@ -360,8 +362,8 @@ function FaultyTerminal({
       // Always re-queue so the loop stays alive and can resume when focus returns.
       rafRef.current = requestAnimationFrame(update);
 
-      // Skip all shader/render work when tab is hidden or window is blurred.
-      if (hiddenRef.current) return;
+      // Skip all shader/render work when tab is hidden, window is blurred, or terminal is off-screen.
+      if (hiddenRef.current || offScreenRef.current) return;
 
       if (pageLoadAnimation && loadAnimationStartRef.current === 0) {
         loadAnimationStartRef.current = t;
@@ -408,6 +410,13 @@ function FaultyTerminal({
     window.addEventListener('focus', onShow);
     ctn.appendChild(gl.canvas);
 
+    // Pause rendering when the terminal scrolls out of the viewport
+    const intersectionObserver = new IntersectionObserver(
+      ([entry]) => { offScreenRef.current = !entry.isIntersecting; },
+      { threshold: 0 }
+    );
+    intersectionObserver.observe(ctn);
+
     if (mouseReact && typeof window !== 'undefined') {
       window.addEventListener('mousemove', handleMouseMove);
     }
@@ -415,6 +424,7 @@ function FaultyTerminal({
     return () => {
       cancelAnimationFrame(rafRef.current);
       resizeObserver.disconnect();
+      intersectionObserver.disconnect();
       if (mouseReact && typeof window !== 'undefined') {
         window.removeEventListener('mousemove', handleMouseMove);
       }

@@ -7,9 +7,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Layers, Code2 } from "lucide-react";
 
-// Register both plugins once, at module level
-gsap.registerPlugin(ScrollTrigger, useGSAP);
-
 // ─── Project Data ────────────────────────────────────────────────────────────
 const projects = [
   {

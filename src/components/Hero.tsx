@@ -65,6 +65,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
+          style={{ willChange: 'transform' }}
         >
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -90,6 +91,7 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
           className="relative"
+          style={{ willChange: 'transform' }}
         >
           <div className="relative w-full max-w-lg mx-auto">
             <div className="bg-gradient-to-br from-primary/20 to-secondary/20 rounded-3xl backdrop-blur-sm border border-primary/30 p-6 sm:p-8 shadow-[0_0_50px_rgba(102,252,241,0.15)]">
@@ -301,10 +303,6 @@ export function Hero() {
                     )}
                   </div>
                 )}
-
-
-                <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
-                <div className="absolute -top-10 -left-10 w-40 h-40 bg-secondary/10 rounded-full blur-3xl pointer-events-none" />
               </div>
             </div>
           </div>

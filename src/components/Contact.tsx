@@ -7,8 +7,6 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 
-gsap.registerPlugin(ScrollTrigger, useGSAP);
-
 // ─── Config — swap these out with your real details ──────────────────────────
 const EMAIL    = "kjonathan08@student.ciputra.ac.id";
 const GITHUB   = "https://github.com/Kiyono-kouji";

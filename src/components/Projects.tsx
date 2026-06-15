@@ -14,7 +14,7 @@ const projects = [
     role: "Full-Stack Developer",
     techStack: ["Swift", "SwiftUI", "Firebase"],
     description:
-      "Built a gamified iOS fitness application that motivates users to exercise through in-app rewards and customizable avatars. Engineered the interactive map experience with dynamic waypoints and route rendering — users can tap anywhere on the map to instantly generate personalized workout routes.",
+      "Built a gamified iOS fitness application that motivates users to exercise through in-app rewards and customizable avatars. Engineered the interactive map experience with dynamic waypoints and route rendering. Users can tap anywhere on the map to instantly generate personalized workout routes.",
     icon: Smartphone,
     image: "/images/larva.webp",
     accentFrom: "from-primary",

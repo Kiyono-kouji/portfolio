@@ -5,10 +5,22 @@ import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { Layers, Code2 } from "lucide-react";
+import { Layers, Code2, Smartphone } from "lucide-react";
 
 // ─── Project Data ────────────────────────────────────────────────────────────
 const projects = [
+  {
+    title: "Larva",
+    role: "Full-Stack Developer",
+    techStack: ["Swift", "SwiftUI", "Firebase"],
+    description:
+      "Built a gamified iOS fitness application that motivates users to exercise through in-app rewards and customizable avatars. Engineered the interactive map experience with dynamic waypoints and route rendering — users can tap anywhere on the map to instantly generate personalized workout routes.",
+    icon: Smartphone,
+    image: "/images/larva.webp",
+    accentFrom: "from-primary",
+    accentTo: "to-secondary",
+    number: "01",
+  },
   {
     title: "TanamIn",
     role: "Full-Stack Developer",
@@ -17,9 +29,9 @@ const projects = [
       "Developed a comprehensive android application for financial tracking and investment education. Engineered core modules including a Wallet system for transaction management and a gamified educational Course interface.",
     icon: Layers,
     image: "/images/tanamIn.webp",
-    accentFrom: "from-primary",
-    accentTo: "to-secondary",
-    number: "01",
+    accentFrom: "from-secondary",
+    accentTo: "to-chart-3",
+    number: "02",
   },
   {
     title: "COTHA",
@@ -29,9 +41,9 @@ const projects = [
       "Spearheaded the complete redesign and modernization of the COTHA website. Leveraged modern Laravel tools and SQL for robust backend data management, paired with a custom Bootstrap implementation to deliver a refreshed, responsive UI.",
     icon: Code2,
     image: "/images/cotha.webp",
-    accentFrom: "from-secondary",
-    accentTo: "to-chart-3",
-    number: "02",
+    accentFrom: "from-chart-3",
+    accentTo: "to-primary",
+    number: "03",
   },
   {
     title: "PintarSkinCare",
@@ -41,9 +53,9 @@ const projects = [
       "Developed the official web-based landing page for the PintarSkinCare application. Utilized Laravel for the backend infrastructure and Tailwind CSS to craft a highly responsive, modern frontend designed to drive user acquisition.",
     icon: Code2,
     image: "/images/pintarSkinCare.webp",
-    accentFrom: "from-chart-3",
-    accentTo: "to-primary",
-    number: "03",
+    accentFrom: "from-primary",
+    accentTo: "to-secondary",
+    number: "04",
   },
 ];
 
@@ -80,9 +92,8 @@ function ProjectCard({
         <div className="relative w-full h-56 sm:h-64 lg:w-1/2 lg:h-full flex-shrink-0 overflow-hidden bg-black/50">
           <div className="absolute inset-0 bg-gradient-to-b from-transparent to-card/80 lg:hidden z-10 pointer-events-none" />
           <div
-            className={`hidden lg:block absolute inset-0 ${
-              imageLeft ? "bg-gradient-to-r" : "bg-gradient-to-l"
-            } from-transparent to-card/70 z-10 pointer-events-none`}
+            className={`hidden lg:block absolute inset-0 ${imageLeft ? "bg-gradient-to-r" : "bg-gradient-to-l"
+              } from-transparent to-card/70 z-10 pointer-events-none`}
           />
           <div
             className={`absolute inset-0 bg-gradient-to-br ${project.accentFrom}/10 ${project.accentTo}/10 z-10 pointer-events-none mix-blend-overlay`}
@@ -101,9 +112,8 @@ function ProjectCard({
         <div className="relative flex flex-col justify-center flex-1 p-5 sm:p-6 lg:p-8 overflow-hidden">
           {/* Floating orb */}
           <div
-            className={`absolute -bottom-10 -right-10 lg:${
-              imageLeft ? "-right-10" : "-left-10"
-            } lg:top-1/2 lg:-translate-y-1/2 w-48 h-48 bg-gradient-to-br ${project.accentFrom}/15 ${project.accentTo}/5 rounded-full blur-3xl pointer-events-none`}
+            className={`absolute -bottom-10 -right-10 lg:${imageLeft ? "-right-10" : "-left-10"
+              } lg:top-1/2 lg:-translate-y-1/2 w-48 h-48 bg-gradient-to-br ${project.accentFrom}/15 ${project.accentTo}/5 rounded-full blur-3xl pointer-events-none`}
           />
 
           <div className="relative z-10">

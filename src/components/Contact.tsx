@@ -8,9 +8,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 
 // ─── Config — swap these out with your real details ──────────────────────────
-const EMAIL    = "kjonathan08@student.ciputra.ac.id";
-const GITHUB   = "https://github.com/Kiyono-kouji";
-const LINKEDIN = "https://www.linkedin.com/in/kenneth-jonathan-halim-945580390/";
+const EMAIL = "kjonathan08@student.ciputra.ac.id";
+const GITHUB = "https://github.com/Kiyono-kouji";
+const LINKEDIN = "https://www.linkedin.com/in/kenjohalim/";
 
 // ─── Social link definitions ──────────────────────────────────────────────────
 const socials = [
@@ -51,9 +51,9 @@ export function Contact({ isAppMounted = false }: { isAppMounted?: boolean }) {
   const [copied, setCopied] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
-  const subRef     = useRef<HTMLParagraphElement>(null);
-  const emailRef   = useRef<HTMLDivElement>(null);
-  const cardsRef   = useRef<HTMLDivElement>(null);
+  const subRef = useRef<HTMLParagraphElement>(null);
+  const emailRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<HTMLDivElement>(null);
 
   // ── Copy-to-clipboard handler ─────────────────────────────────────────────
   const handleCopy = async () => {
@@ -88,8 +88,8 @@ export function Contact({ isAppMounted = false }: { isAppMounted?: boolean }) {
       });
 
       tl.fromTo(headingRef.current, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" })
-        .fromTo(subRef.current,     { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, "-=0.5")
-        .fromTo(emailRef.current,   { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, "-=0.4")
+        .fromTo(subRef.current, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, "-=0.5")
+        .fromTo(emailRef.current, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, "-=0.4")
         .fromTo(
           cardsRef.current?.querySelectorAll(".social-card") ?? [],
           { y: 40, opacity: 0 },
